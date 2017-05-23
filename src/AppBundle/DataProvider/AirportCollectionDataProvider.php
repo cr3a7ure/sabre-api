@@ -77,7 +77,7 @@ final class AirportCollectionDataProvider implements CollectionDataProviderInter
         }
 
         //AUTOCOMPLETE
-        $token = 'bearer T1RLAQLTZY3HM2avNngeMp/rAcqXheN5QBCYLAop5wJui+mfNmZx0+DWAADADChGNglpLiB2OJnBpsltltaIoolad4AQaw0Qaouv9G9WueXg3V5OfRrlF05CNkmZuzegjqDLet/NlAul3vYGGHEXykuv9a0R8+1MpCpnnkKvRkOKiEaXp/uspLsRJ3/hCYEvVMzICF3smRBPvN5hTLaISw2w4qu6qPipodwiqpAH4YY1HR2d24Hzv3eYOKjP0R1yPPzcBcWb5In/jsHLLlX1c8wuIxuBSUbcftKYMU3CMvJM9bvhAiZgv4GBD7as';
+        $token = 'bearer T1RLAQIf5uRGe+gkncyM4P5m+Cq303wYYhA7+S1CbcMbVqOU3ypdKztwAADATKumPv1n2M/q/8jq3+lk6wufE3Nbd71MGhFqZXEOv5RCdIYfHHiSM8qOOqoCyhlGe5S3fgB85m0e9zvzwEprDuCNB4Jf+ZztY/ls8Mz6RIwqYYotJOJ/VePI2BNznzqeTDogU/twV6glx4D69UqmTRjRkLeajtYwimqfg8LAuIygK77SyNqTz7Lmo0SNZ2xqZj/PQRrxeWmG76xWoEoP3iDDmqYs15Gdgv4HmxJMQKI/wElIgY7STkHwWur2DkM7';
         $query['category'] = 'AIR';//other categories AIR, CITY, RAIL
 
         $url = 'https://api.test.sabre.com/v1/lists/utilities/geoservices/autocomplete';
