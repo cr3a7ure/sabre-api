@@ -1,0 +1,56 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+
+    address.search_filter:
+        parent:    "api_platform.doctrine.orm.search_filter"
+        arguments: [ { id: "exact", addressLocality: "exact"  } ]
+        tags:      [ { name: 'api_platform.filter', id: 'address.search' } ]
+
+    flight.search_filter:
+        parent:    "api_platform.doctrine.orm.search_filter"
+        arguments: [ { departureAirport: "exact", arrivalAirport.id: "exact",departureTime: "exact",arrivalTime: "partial"  } ]
+        tags:      [ { name: 'api_platform.filter', id: 'flight.search' } ]
+
+    flight.collection_data_provider:
+        class: 'AppBundle\DataProvider\FlightCollectionDataProvider'
+        arguments: ["@request_stack"]
+        tags:
+            -  { name: 'api_platform.collection_data_provider', priority: 2 }
+
+    airport.search_filter:
+        parent:    "api_platform.doctrine.orm.search_filter"
+        arguments: [ { iataCode: "exact", address.addressCountry: "partial",address.addressLocality: "partial"  } ]
+        tags:      [ { name: 'api_platform.filter', id: 'airport.search' } ]
+
+    airport.collection_data_provider:
+        class: 'AppBundle\DataProvider\AirportCollectionDataProvider'
+        arguments: ["@request_stack","@doctrine"]
+        tags:
+            -  { name: 'api_platform.collection_data_provider', priority: 2 }
+
+    offer.search_filter:
+        parent:    "api_platform.doctrine.orm.search_filter"
+        arguments: [ { itemOffered.departureAirport.iataCode: "partial", itemOffered.arrivalAirport.iataCode: "partial",itemOffered.departureTime: "partial",itemOffered.arrivalTime: "partial" } ]
+        tags:      [ { name: 'api_platform.filter', id: 'offer.search' } ]
+
+    offer.collection_data_provider:
+        class: 'AppBundle\DataProvider\OfferCollectionDataProvider'
+        arguments: ["@request_stack","@doctrine"]
+        tags:
+            -  { name: 'api_platform.collection_data_provider', priority: 2 }
+
+    hotel.collection_data_provider:
+        class: 'AppBundle\DataProvider\HotelCollectionDataProvider'
+        arguments: ["@request_stack","@doctrine"]
+        tags:
+            -  { name: 'api_platform.collection_data_provider', priority: 2 }
+
+    hotel.search_filter:
+        parent:    "api_platform.doctrine.orm.search_filter"
+        arguments: [ { name: "partial", address: "exact", geo.latitude: "partial", geo.longitude: "partial"  } ]
+        tags:      [ { name: 'api_platform.filter', id: 'hotel.search' } ]
+

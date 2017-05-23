@@ -1,0 +1,16 @@
+api:
+    resource: '.'
+    type:     'api_platform'
+
+app:
+    resource: '@AppBundle/Action/'
+    type:     'annotation'
+
+# douleue, kaiden afhne..
+# api_special:
+#     path: '/api_post'
+#     methods:  ['POST']
+#     defaults:
+#         _controller: 'AppBundle:Api:special'
+#         _api_resource_class: 'AppBundle\Entity\ApiRef'
+#         _api_item_operation_name: 'special'

@@ -1,0 +1,25 @@
+# src/AppBundle/Resources/config/api_resources/resources.yml
+
+# AppBundle\Entity\APIReference:
+#     itemOperations:
+#         get:
+#             method: 'GET'
+#         post:
+#             method: 'POST'
+#     collectionOperations:
+#         get:
+#             method: 'GET'
+#         post:
+#             method: 'POST'
+#         special:
+#             route_name: 'api_post'
+
+# AppBundle\Entity\ApiRef:
+#      collectionOperations:
+#          special:
+#              # method: 'PUT'
+#              route_name: 'api_ref_action'
+#              hydra_context: { foo: 'bar' }
+#          get:
+#              method: 'GET'
+#              hydra_context: { expects: 'hydra:template' }

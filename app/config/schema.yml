@@ -1,0 +1,70 @@
+# app/config/schema.yml
+# Geo-API
+annotationGenerators:
+    - ApiPlatform\SchemaGenerator\AnnotationGenerator\PhpDocAnnotationGenerator
+    - ApiPlatform\SchemaGenerator\AnnotationGenerator\DoctrineOrmAnnotationGenerator
+    - ApiPlatform\SchemaGenerator\AnnotationGenerator\ConstraintAnnotationGenerator
+    - ApiPlatform\SchemaGenerator\AnnotationGenerator\ApiPlatformCoreAnnotationGenerator
+
+types: # The list of type to generated (a PHP entity class by type will be generated)
+
+  Flight:
+    parent: false
+    properties:
+      additionalType: ~
+      arrivalAirport: {
+        range: Airport }
+      departureAirport: {
+        range: Airport }
+      departureTime: ~
+      arrivalTime: ~
+      provider: {
+        range: Text }
+  Airport:
+    parent: false
+    properties:
+      iataCode:
+        unique: true
+      address: { range: PostalAddress }
+      geo: { range: GeoCoordinates }
+  PostalAddress:
+    parent: false
+    properties:
+      addressCountry:
+        range: Text
+      addressLocality: ~
+      addressRegion: ~
+      postalCode: ~
+      streetAddress: ~
+  Offer:
+    parent: false
+    properties:
+      priceCurrency: ~
+      itemOffered: { range: Flight }
+      price: {
+        range: Number }
+      seller: {
+        range: Text }
+  GeoCoordinates:
+    parent: false
+    properties:
+      latitude: ~
+      longitude: ~
+  Hotel:
+    parent: false
+    properties:
+      name: ~
+      description: ~
+      address: {range: PostalAddress }
+      faxNumber: ~
+      telephone: ~
+      geo: { range: GeoCoordinates}
+  # EntryPoint:
+    # parent: false
+      # properties:
+        # actionApplication: {range: Text}
+        # actionPlatform: ~
+        # contentType: ~
+        # encodingType: ~
+        # httpMethod: ~
+        # urlTemplate: {range: Text}
