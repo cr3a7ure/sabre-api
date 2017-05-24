@@ -73,12 +73,12 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
         $query['GeoSearchRQ']['GeoRef']['GeoCode'] = array();
 
         if (array_key_exists('longitude',$searchQuery)) {
-            $query['GeoSearchRQ']['GeoRef']['GeoCode']['Longitude'] = $searchQuery['longitude'];
+            $query['GeoSearchRQ']['GeoRef']['GeoCode']['Longitude'] = floatval($searchQuery['longitude']);
         } else {
             $query['GeoSearchRQ']['GeoRef']['GeoCode']['Longitude'] = 23.951255;
         }
         if (array_key_exists('latitude',$searchQuery)) {
-            $query['GeoSearchRQ']['GeoRef']['GeoCode']['Latitude'] = $searchQuery['latitude'];
+            $query['GeoSearchRQ']['GeoRef']['GeoCode']['Latitude'] = floatval($searchQuery['latitude']);
         } else {
             $query['GeoSearchRQ']['GeoRef']['GeoCode']['Latitude'] = 37.936357;//23.951255;
         }
@@ -121,7 +121,7 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
                 $postalArray[$key]->setAddressLocality($value->City);
                 // $postalArray[$key]->setAddressRegion($value->);
                 $postalArray[$key]->setPostalCode($value->Zip);
-                $postalArray[$key]->setStreetAddress($value->Street);
+                // $postalArray[$key]->setStreetAddress($value->Street);
                 $geoArray[$key]->setId($key);
                 $geoArray[$key]->setLatitude($value->Latitude);
                 $geoArray[$key]->setLongitude($value->Longitude);
@@ -158,7 +158,7 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
             $body = Unirest\Request\Body::json($query);
             // dump($body);
             $response = Unirest\Request::post($url,$headers,$body);
-            // dump($response);
+            dump($response);
             $hotels = array();
             $geolocs = array();
             $addresses = array();
@@ -170,7 +170,11 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
             foreach ($data as $key => $value) {
                 $v = $value->HotelInfo;
                 $l = $value->LocationInfo;
-                if ($v->Status=='Inactive') {
+                if (array_key_exists('Status',$v)) {
+                    if ($v->Status=='Inactive') {
+                        continue;
+                    }
+                } else {
                     continue;
                 }
                 $desc = $value->Descriptions->Description[0]->Text->content;
