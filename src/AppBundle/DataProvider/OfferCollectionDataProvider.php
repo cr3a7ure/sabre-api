@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
+use \DateTime;
+use \DateInterval;
 use Unirest;
 // use Mashape\UnirestPhp\Unirest;
 
@@ -27,9 +29,9 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
     }
 
     protected function getSabreToken() {
-        $clientId = 'V1:2hxuxcm6hz4aex5n:DEVCENTER:EXT';
+        $clientId = 'VjE6Mmh4dXhjbTZoejRhZXg1bjpERVZDRU5URVI6RVhU';
         $encodedId = base64_encode($clientId);
-        $clientSecret = 'NhATlh81';
+        $clientSecret = 'TmhBVGxoODE=';
         $encodedSecret = base64_encode($clientSecret);
         $id = base64_encode($encodedId.':'.$encodedSecret);
         $urlToken = 'https://api.sabre.com/v2/auth/token';
@@ -81,6 +83,9 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
             }
         }
 
+        $now = new  DateTime();
+        $interval = new DateInterval('P1W');
+        $next_week = $now->add($interval);
         if(array_key_exists('itemOffered_arrivalAirport_iataCode',$searchParametersObj)) {
             $searchQuery['destination'] = $searchParametersObj['itemOffered_arrivalAirport_iataCode'];
         } else {
@@ -97,7 +102,7 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
             // $inboundPartialDate =  $da->format('Y-m-d');
             $searchQuery['returndate'] =  $da->format('Y-m-d');
         } else {
-            $searchQuery['returndate'] = '2017-07-08';
+            $searchQuery['returndate'] = $now->format('Y-m-d');
         }
         if (array_key_exists('itemOffered_departureTime',$searchParametersObj)) {
             // $dd = \DateTime::createFromFormat("Y-m-d",$searchParametersObj['itemOffered_departureTime']);
@@ -105,11 +110,11 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
             // $outboundPartialDate =  $dd->format('Y-m-d');
             $searchQuery['departuredate'] =  $dd->format('Y-m-d');
         } else {
-            $searchQuery['departuredate'] = '2017-07-07';
+            $searchQuery['departuredate'] = $next_week->format('Y-m-d');
         }
 
         // $token = $this->getSabreToken();
-        $token = 'bearer T1RLAQKy/KrwJyisnf4MnjOu3WmPT+7rnhD+SmxhaDCJzV4Z4YbtiIQhAADAAltSEMwd6Lq0AzX9dQL6YfC1a6eVgrCkx0wXE3yxk5D8WtAv6OVy3ipinX2p5andEz/YJ7yy1f5G7X9HlDk/s8WIc3yS7XAsLYJzCe+mJ3WSQkmjfPYWWB7A/DnmLH/7iZ/YgpfaMLTW41ukdXpbCrQ2HRxsZbVFwg30s14Hx/ZIWJ7JUentyaZ6O9p1KI8HQHZysDDQR0ArVjvDH5AsdBcpmPg+G13xjWKJUZ4k32GTwjGaQGM4gKE84IcfEf9q';
+        $token = 'bearer T1RLAQLBeqzhC8d7Yghp36nUVZPjikPntRDVEGSyErG0JNExfCCDQW1CAADAm0imXM304+v9b/C5GR64n6yfD7w2ET07pLHe7ASu5pvSFMZtiq55d6qvyYwRhYVNoJptxa6K0vmfGMS/CLOQQuFOSwqxLJgITkiDNzJDnJQ9Oxq/JMLC5KAvMtYflbaeEvUZdaIw7cpzM+hKGFEpp5g7hSlsfesrm51M4a6RJZ3PnHoqp2hrIAbj2jBtrpfGoVLMC8QHRKR0flqVPGqIoZvMg82hf5YfxDxqCrfOMA78nsH6GPIFb2c562PQmCH+';
 
         $headers = array('Authorization' => $token, 'Content-Type' => 'application/json' );
         // $headers = array('X-Originating-Ip' => '94.66.220.69');
@@ -128,12 +133,16 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
         $query['order2'] = 'asc';
         $query['pointofsalecountry'] = '';
 
-        dump($query);
+        // dump($query);
         $url = 'https://api.test.sabre.com/v1/shop/flights';
         $response = Unirest\Request::get($url,$headers,$query);
 
-        dump($response);
-
+        // dump($response);
+        if (property_exists($response->body,'status')) {
+            if ($response->body->status=='NotProcessed') {
+                return [];
+            }
+        }
 // +"DepartureDateTime": "2017-07-07T06:30:00"
 // +"ArrivalDateTime": "2017-07-07T08:23:00"
         $originAirport = new Airport();

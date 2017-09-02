@@ -37,9 +37,9 @@ final class FlightCollectionDataProvider implements CollectionDataProviderInterf
         // $test = $request->query;//->get('');
         $props = $request->query->all();
         $propKeys = array_keys($props);
-        // dump($propKeys[1]);
+        // dump($propKeys[1]); 
         // dump($props[$propKeys[1]]);
-        $headers = array('Authorization' => 'Bearer T1RLAQLY+GWFPW4pHGl7yWlxGIlQ26HgYRDFYFGW5SbxXd+oWiJo45CLAADAYiK3A4vrbId5XsQT7wHAEr+HVtrxi8h7NnNw2TbjmJXm5Sdj1H4oyYf/npBuV6TDyRs87JTFV4QvQ/9p/RVR5CSCqIKtk2xKyyrXSRHx74gWmukKVBA+HTEoP3u/WspGxfRowHHoFZ74pzqztclxUKMLSykFjLS0+9HmszfVIG/sHWyMI3qJRi/WU6jTtZG6IuCNvAh5RyD5q0ttBPEKwTiG/4ZJK1rgSkjWWDgmjUr8d0hZsiPbUbavGgoji/Xh');
+        $headers = array('Authorization' => 'Bearer T1RLAQLBeqzhC8d7Yghp36nUVZPjikPntRDVEGSyErG0JNExfCCDQW1CAADAm0imXM304+v9b/C5GR64n6yfD7w2ET07pLHe7ASu5pvSFMZtiq55d6qvyYwRhYVNoJptxa6K0vmfGMS/CLOQQuFOSwqxLJgITkiDNzJDnJQ9Oxq/JMLC5KAvMtYflbaeEvUZdaIw7cpzM+hKGFEpp5g7hSlsfesrm51M4a6RJZ3PnHoqp2hrIAbj2jBtrpfGoVLMC8QHRKR0flqVPGqIoZvMg82hf5YfxDxqCrfOMA78nsH6GPIFb2c562PQmCH+');
         $headers = array('Content-Type' => 'application/json');
         $headers = array('X-Originating-Ip' => '94.66.220.69');
         $query = array();

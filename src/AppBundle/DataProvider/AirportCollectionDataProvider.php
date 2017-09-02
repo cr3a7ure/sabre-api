@@ -32,6 +32,28 @@ final class AirportCollectionDataProvider implements CollectionDataProviderInter
         // $this->objectManager = $objectManager;
     }
 
+    protected function getSabreToken() {
+        $clientId = 'VjE6Mmh4dXhjbTZoejRhZXg1bjpERVZDRU5URVI6RVhU';
+        $encodedId = base64_encode($clientId);
+        $clientSecret = 'TmhBVGxoODE=';
+        $encodedSecret = base64_encode($clientSecret);
+        $id = base64_encode($encodedId.':'.$encodedSecret);
+        $urlToken = 'https://api.sabre.com/v2/auth/token';
+        $urlToken = 'https://api.test.sabre.com/v2/auth/token';
+        $headersToken= array('Authorization' => 'Basic '.$id, 'Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => '*/*' );
+        dump($headersToken);
+        $payloadArray = array('grant_type'=>'client_credentials');
+        $payload = Unirest\Request\Body::json($payloadArray);
+        dump($payload);
+        $payload = 'grant_type=client_credentials';
+        dump($payloadArray);
+        $responseToken = Unirest\Request::post($urlToken,$headersToken,$payload);
+        $token = $responseToken->body->token_type . ' ' . $responseToken->body->access_token;
+        dump($responseToken);
+        dump($token);
+        return $token;
+    }
+
     public function getCollection(string $resourceClass, string $operationName = null)
     {
         if (Airport::class !== $resourceClass) {
@@ -77,7 +99,7 @@ final class AirportCollectionDataProvider implements CollectionDataProviderInter
         }
 
         //AUTOCOMPLETE
-        $token = 'bearer T1RLAQIf5uRGe+gkncyM4P5m+Cq303wYYhA7+S1CbcMbVqOU3ypdKztwAADATKumPv1n2M/q/8jq3+lk6wufE3Nbd71MGhFqZXEOv5RCdIYfHHiSM8qOOqoCyhlGe5S3fgB85m0e9zvzwEprDuCNB4Jf+ZztY/ls8Mz6RIwqYYotJOJ/VePI2BNznzqeTDogU/twV6glx4D69UqmTRjRkLeajtYwimqfg8LAuIygK77SyNqTz7Lmo0SNZ2xqZj/PQRrxeWmG76xWoEoP3iDDmqYs15Gdgv4HmxJMQKI/wElIgY7STkHwWur2DkM7';
+        $token = 'bearer T1RLAQLBeqzhC8d7Yghp36nUVZPjikPntRDVEGSyErG0JNExfCCDQW1CAADAm0imXM304+v9b/C5GR64n6yfD7w2ET07pLHe7ASu5pvSFMZtiq55d6qvyYwRhYVNoJptxa6K0vmfGMS/CLOQQuFOSwqxLJgITkiDNzJDnJQ9Oxq/JMLC5KAvMtYflbaeEvUZdaIw7cpzM+hKGFEpp5g7hSlsfesrm51M4a6RJZ3PnHoqp2hrIAbj2jBtrpfGoVLMC8QHRKR0flqVPGqIoZvMg82hf5YfxDxqCrfOMA78nsH6GPIFb2c562PQmCH+';
         $query['category'] = 'AIR';//other categories AIR, CITY, RAIL
 
         $url = 'https://api.test.sabre.com/v1/lists/utilities/geoservices/autocomplete';

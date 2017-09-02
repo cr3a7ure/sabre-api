@@ -89,7 +89,7 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
         // dump($query);
 
 
-        $token = 'bearer T1RLAQKy/KrwJyisnf4MnjOu3WmPT+7rnhD+SmxhaDCJzV4Z4YbtiIQhAADAAltSEMwd6Lq0AzX9dQL6YfC1a6eVgrCkx0wXE3yxk5D8WtAv6OVy3ipinX2p5andEz/YJ7yy1f5G7X9HlDk/s8WIc3yS7XAsLYJzCe+mJ3WSQkmjfPYWWB7A/DnmLH/7iZ/YgpfaMLTW41ukdXpbCrQ2HRxsZbVFwg30s14Hx/ZIWJ7JUentyaZ6O9p1KI8HQHZysDDQR0ArVjvDH5AsdBcpmPg+G13xjWKJUZ4k32GTwjGaQGM4gKE84IcfEf9q';
+        $token = 'bearer T1RLAQLBeqzhC8d7Yghp36nUVZPjikPntRDVEGSyErG0JNExfCCDQW1CAADAm0imXM304+v9b/C5GR64n6yfD7w2ET07pLHe7ASu5pvSFMZtiq55d6qvyYwRhYVNoJptxa6K0vmfGMS/CLOQQuFOSwqxLJgITkiDNzJDnJQ9Oxq/JMLC5KAvMtYflbaeEvUZdaIw7cpzM+hKGFEpp5g7hSlsfesrm51M4a6RJZ3PnHoqp2hrIAbj2jBtrpfGoVLMC8QHRKR0flqVPGqIoZvMg82hf5YfxDxqCrfOMA78nsH6GPIFb2c562PQmCH+';
 
         $headers = array('Authorization' => $token, 'Content-Type' => 'application/json' );
         // $headers = array('X-Originating-Ip' => '94.66.220.69');
@@ -120,7 +120,13 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
                 $postalArray[$key]->setId($key);
                 $postalArray[$key]->setAddressLocality($value->City);
                 // $postalArray[$key]->setAddressRegion($value->);
-                $postalArray[$key]->setPostalCode($value->Zip);
+                if (property_exists($value,'Zip')) {
+                    if (preg_match('/\\d/', $value->Zip)) {
+                        $postalArray[$key]->setPostalCode($value->Zip);
+                    }
+                } else {
+                    $postalArray[$key]->setPostalCode('00000');
+                }
                 // $postalArray[$key]->setStreetAddress($value->Street);
                 $geoArray[$key]->setId($key);
                 $geoArray[$key]->setLatitude($value->Latitude);
@@ -177,7 +183,12 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
                 } else {
                     continue;
                 }
-                $desc = $value->Descriptions->Description[0]->Text->content;
+                if (property_exists($value,'Descriptions')) {
+                    $desc = ( property_exists($value->Descriptions,'Description') ? $value->Descriptions->Description[0]->Text->content : '' );
+                    // $desc = $value->Descriptions->Description[0]->Text->content;
+                } else {
+                    $desc = '';
+                }
                 $id = $v->HotelCode;
                 $hotels[$counter] = new Hotel();
                 $hotels[$counter] = $hotelsArray[$id];
@@ -190,7 +201,8 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
                 $adresses[$counter]->setAddressCountry($l->Address->CountryName->Code);
                 $adresses[$counter]->setAddressLocality($l->Address->CityName);
                 $adresses[$counter]->setAddressRegion($l->Address->StateProv->content);
-                $adresses[$counter]->setPostalCode($l->Address->PostalCode);
+                // $adresses[$counter]->setPostalCode($l->Address->PostalCode);
+                $adresses[$counter]->setPostalCode( property_exists($l->Address,'PostalCode') ? $l->Address->PostalCode : '' );
                 $adresses[$counter]->setStreetAddress($l->Address->AddressLine1);
 
                 $geolocs[$counter] = new GeoCoordinates();
