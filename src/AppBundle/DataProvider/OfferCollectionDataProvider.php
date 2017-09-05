@@ -200,6 +200,6 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
         }
         // $value->AirItinerary->DirectionInd 'Return';
         // throw new \Exception('DUMPSTERRRRR!');
-            return [$offered];
+            return $offered;
     }
 }

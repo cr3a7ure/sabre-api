@@ -150,6 +150,6 @@ final class FlightCollectionDataProvider implements CollectionDataProviderInterf
         // $response = Unirest\Request::post($url,$headers,$query);
         // dump($response);
 
-            return [$flights];
+            return $flights;
     }
 }

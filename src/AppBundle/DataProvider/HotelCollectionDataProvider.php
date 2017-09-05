@@ -219,7 +219,7 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
             }
             // dump($hotels);
             // $hotels = [];
-            return [$hotels];
+            return $hotels;
         }
     }
 }

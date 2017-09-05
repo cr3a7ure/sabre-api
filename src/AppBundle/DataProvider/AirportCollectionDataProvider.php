@@ -136,7 +136,7 @@ final class AirportCollectionDataProvider implements CollectionDataProviderInter
                 $airports[$key]->setGeo($geo[$key]);
             }
 
-            return [$airports];
+            return $airports;
         }
     }
 }
