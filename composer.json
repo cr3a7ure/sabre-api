@@ -18,10 +18,17 @@
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }
     },
+    "repositories": [
+    {
+	"type": "git",
+	"url": "https://github.com/cr3a7ure/core"					            
+    }
+       
+	    ],
     "require": {
         "php": ">=7.0",
         "symfony/symfony": "3.2.*",
-        "api-platform/core": "^2.0",
+        "api-platform/core": "dev-apires",
         "doctrine/orm": "^2.5",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -33,7 +40,7 @@
         "dunglas/action-bundle": "^0.3",
         "nelmio/cors-bundle": "^1.4",
         "phpdocumentor/reflection-docblock": "^3.0",
-        "circle/doctrine-rest-driver": "^2.2",
+        "circle/doctrine-rest-driver": "1.2.2",
         "mashape/unirest-php": "^3.0",
         "ml/json-ld": "1.*"
     },
