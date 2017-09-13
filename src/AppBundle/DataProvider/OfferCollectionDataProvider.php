@@ -137,7 +137,7 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
         $url = 'https://api.test.sabre.com/v1/shop/flights';
         $response = Unirest\Request::get($url,$headers,$query);
 
-        // dump($response);
+        dump($response);
         if (property_exists($response->body,'status')) {
             if ($response->body->status=='NotProcessed') {
                 return [];
