@@ -114,7 +114,7 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
         }
 
         // $token = $this->getSabreToken();
-        $token = 'bearer T1RLAQJNcwrJ1nODrPgUPNHE6aELoGYsExDR4hDNY3j8JfG+slQpwRqkAADA3oTYcLznKKD4UyfEpYlib/JTV0KW23FgAI1i3hGI+VqUVpIwbHTVwzvTtO2JNPECYvOMKu0HRiBhnG6a/I40iZw+ztIWlktfk3IHdn3CR9NG+rMb67129AZW/uQrYDDcyN8txKdA9PoLqjW4RlR3yZsXnZao1DdBRIdEidaRmdXJEl1Kpd6n8K3T4X+h8Z2dxWTioCuyk1xdoCwXf/Bir1F+9RVsd8LpzH7hauJaVB1HrazD/OgNU7tdxGJGfxuF';
+        $token = 'bearer T1RLAQIZnn+eMPT5dOCMfWv3st7rsBy9GhBEfXQaxDnZ6vGYH90ZxjQLAADAcbL68pAcRYLt2g4vYAOuKv9xzPaZcrBABn/WSPE5vy4jAZg5LlRv/ISUZgiAsaqlf5rhfXqb5jTWTan4h2eopvtGEXHopsaczDhPj2LH48H1XS2LaKoPCTF3QuFA3cppFA93OzZeSkgdtmLZte9GyERKOWoMuFMeiK2dl3ISySy9y5tCLYPz7h/x00tAo9KqBOa4cjy6tgPHJAE5V2k+N6oVvVhT/vzgbiczxwEiRlxnWXGg5hApTPQrXdvf+WsP';
 
         $headers = array('Authorization' => $token, 'Content-Type' => 'application/json' );
         // $headers = array('X-Originating-Ip' => '94.66.220.69');
@@ -137,7 +137,7 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
         $url = 'https://api.test.sabre.com/v1/shop/flights';
         $response = Unirest\Request::get($url,$headers,$query);
 
-        dump($response);
+        // dump($response);
         if (property_exists($response->body,'status')) {
             if ($response->body->status=='NotProcessed') {
                 return [];
