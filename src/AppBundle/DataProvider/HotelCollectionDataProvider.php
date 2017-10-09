@@ -89,7 +89,7 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
         // dump($query);
 
 
-        $token = 'bearer T1RLAQK0FUFk2Zg7ljVwRUySI1YvF7AosBCIWU0r/OxVkCXB0ID160bZAADAD3qEagEL4k8eAmy1sH25/FqofLoyiOfKXgrT7syu/c93EJtYtyG7MZ90V9b+7I1gKaFERTczrZCqtcmTnJ239S8Ru9ktysVKt1qFkCYdiXPmw2bN7sSOKtHRgKwJaTdzFQvTxtvXvgIt9cQw7U9JpLO4U4YsxsCjYshWWukQtgywpNHKua3FenkLuVyOh/gkCKFQSxsrt6IKoesPgEBBwlsy3GV4JZ1heAl3v4O4KafR1cWOlhjUM9YSmILJ+Wnb';
+        $token = 'bearer T1RLAQIdFbN195gm3G3AUaUjddM9JW6ulhBqhCWrMS7sFdXh3YrmNzD0AADABpc1DvFHLF6EDyvrDJxxM4ewAT6MCVD6ArSD6xRP/6VC5FewXSi2ZmGd/cRtx/rAL7nMuCH/0HwUZkCQcySIvRs0EZqgTal1aPcQh8WUL0iYZkU/Rrbf0osC5APhcRLOt2kSc25g3iqlppokSrQPG6FDA3VJ9uRAhVnnqETHYlWaH04sREsTkOj3UPRXQ9hZ1m1SWsJ32UnR9WhNaJlv6MBDRdXZXpQ59au5NiH1ecyDuPkDbj0SbcDRjD1xBnK2';
 
         $headers = array('Authorization' => $token, 'Content-Type' => 'application/json' );
         // $headers = array('X-Originating-Ip' => '94.66.220.69');

@@ -97,24 +97,26 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
             $searchQuery['origin'] = 'LAX';
         }
         if (array_key_exists('itemOffered_arrivalTime',$searchParametersObj)) {
-            // $da = \DateTime::createFromFormat("Y-m-d",$searchParametersObj['itemOffered_arrivalTime']);
-            $da = \DateTime::createFromFormat("D M d Y",$searchParametersObj['itemOffered_arrivalTime']);
-            // $inboundPartialDate =  $da->format('Y-m-d');
+            // $da = \DateTime::createFromFormat('Y-d-m\TH:i:s.u',$searchParametersObj['itemOffered_arrivalTime']);
+            $da = \DateTime::createFromFormat(\DateTime::W3C,$searchParametersObj['itemOffered_arrivalTime']);
             $searchQuery['returndate'] =  $da->format('Y-m-d');
+            dump($da);
         } else {
             $searchQuery['returndate'] = $now->format('Y-m-d');
         }
         if (array_key_exists('itemOffered_departureTime',$searchParametersObj)) {
-            // $dd = \DateTime::createFromFormat("Y-m-d",$searchParametersObj['itemOffered_departureTime']);
-            $dd = \DateTime::createFromFormat("D M d Y",$searchParametersObj['itemOffered_departureTime']);
-            // $outboundPartialDate =  $dd->format('Y-m-d');
+            // $dd = \DateTime::createFromFormat('Y-d-m\TH:i:s.u',$searchParametersObj['itemOffered_departureTime']);
+            // $dd2 = \DateTime::createFromFormat(\DateTime::ATOM,$searchParametersObj['itemOffered_departureTime']);
+            $dd = \DateTime::createFromFormat(\DateTime::W3C,$searchParametersObj['itemOffered_departureTime']);
+            dump($dd);
+            // dump($dd2);
             $searchQuery['departuredate'] =  $dd->format('Y-m-d');
         } else {
             $searchQuery['departuredate'] = $next_week->format('Y-m-d');
         }
-
+        dump($searchQuery);
         // $token = $this->getSabreToken();
-        $token = 'bearer T1RLAQK0FUFk2Zg7ljVwRUySI1YvF7AosBCIWU0r/OxVkCXB0ID160bZAADAD3qEagEL4k8eAmy1sH25/FqofLoyiOfKXgrT7syu/c93EJtYtyG7MZ90V9b+7I1gKaFERTczrZCqtcmTnJ239S8Ru9ktysVKt1qFkCYdiXPmw2bN7sSOKtHRgKwJaTdzFQvTxtvXvgIt9cQw7U9JpLO4U4YsxsCjYshWWukQtgywpNHKua3FenkLuVyOh/gkCKFQSxsrt6IKoesPgEBBwlsy3GV4JZ1heAl3v4O4KafR1cWOlhjUM9YSmILJ+Wnb';
+        $token = 'bearer T1RLAQIdFbN195gm3G3AUaUjddM9JW6ulhBqhCWrMS7sFdXh3YrmNzD0AADABpc1DvFHLF6EDyvrDJxxM4ewAT6MCVD6ArSD6xRP/6VC5FewXSi2ZmGd/cRtx/rAL7nMuCH/0HwUZkCQcySIvRs0EZqgTal1aPcQh8WUL0iYZkU/Rrbf0osC5APhcRLOt2kSc25g3iqlppokSrQPG6FDA3VJ9uRAhVnnqETHYlWaH04sREsTkOj3UPRXQ9hZ1m1SWsJ32UnR9WhNaJlv6MBDRdXZXpQ59au5NiH1ecyDuPkDbj0SbcDRjD1xBnK2';
 
         $headers = array('Authorization' => $token, 'Content-Type' => 'application/json' );
         // $headers = array('X-Originating-Ip' => '94.66.220.69');
@@ -137,11 +139,15 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
         $url = 'https://api.test.sabre.com/v1/shop/flights';
         $response = Unirest\Request::get($url,$headers,$query);
 
-        // dump($response);
-        if (property_exists($response->body,'status')) {
-            if ($response->body->status=='NotProcessed') {
-                return [];
+        dump($response);
+        if($response->code === 200) {
+            if (property_exists($response->body,'status')) {
+                if ($response->body->status=='NotProcessed') {
+                    return [];
+                }
             }
+        } else {
+            return [];
         }
 // +"DepartureDateTime": "2017-07-07T06:30:00"
 // +"ArrivalDateTime": "2017-07-07T08:23:00"
@@ -175,7 +181,7 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
             $airlineCodes[$key] = $airlineCode;
             $offered[$key] = new Offer();
             $offered[$key]->setId($key);
-            $offered[$key]->setPrice($value->AirItineraryPricingInfo->ItinTotalFare->TotalFare->Amount);
+            $offered[$key]->setPrice(floatval($value->AirItineraryPricingInfo->ItinTotalFare->TotalFare->Amount));
             $offered[$key]->setPriceCurrency($value->AirItineraryPricingInfo->ItinTotalFare->TotalFare->CurrencyCode);
             $offered[$key]->setSeller('sabre');
             $offered[$key]->setItemOffered($flights[$key]);
