@@ -8,6 +8,7 @@ use AppBundle\Entity\Offer;
 use AppBundle\Entity\Airport;
 use AppBundle\Entity\Flight;
 use AppBundle\Entity\PostalAddress;
+use AppBundle\Action\SabreRetrieveTokenAction as Sabre;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +20,16 @@ use Unirest;
 final class FlightCollectionDataProvider implements CollectionDataProviderInterface
 {
   protected $requestStack;
+  protected $clientId;
+  protected $clientSecret;
+  protected $token;
 
-  public function __construct(RequestStack $requestStack)
+  public function __construct(RequestStack $requestStack, $reg, $clientId, $clientSecret)
     {
         $this->requestStack = $requestStack;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+        $this->token = Sabre::getSabreToken($clientId,$clientSecret);
     }
 
     public function getCollection(string $resourceClass, string $operationName = null)

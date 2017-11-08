@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
+use AppBundle\Action\SabreRetrieveTokenAction as Sabre;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,35 +24,18 @@ final class AirportCollectionDataProvider implements CollectionDataProviderInter
 {
   protected $requestStack;
   protected $managerRegistry;
+  protected $clientId;
+  protected $clientSecret;
+  protected $token;
   // protected $objectManager;
 
-  public function __construct(RequestStack $requestStack,ManagerRegistry $managerRegistry)
+  public function __construct(RequestStack $requestStack,ManagerRegistry $managerRegistry, $clientId, $clientSecret)
     {
         $this->requestStack = $requestStack;
         $this->managerRegistry = $managerRegistry;
-        // $this->objectManager = $objectManager;
-    }
-
-    protected function getSabreToken() {
-        $clientId = 'VjE6Mmh4dXhjbTZoejRhZXg1bjpERVZDRU5URVI6RVhU';
-        $encodedId = base64_encode($clientId);
-        $clientSecret = 'TmhBVGxoODE=';
-        $encodedSecret = base64_encode($clientSecret);
-        $id = base64_encode($encodedId.':'.$encodedSecret);
-        $urlToken = 'https://api.sabre.com/v2/auth/token';
-        $urlToken = 'https://api.test.sabre.com/v2/auth/token';
-        $headersToken= array('Authorization' => 'Basic '.$id, 'Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => '*/*' );
-        dump($headersToken);
-        $payloadArray = array('grant_type'=>'client_credentials');
-        $payload = Unirest\Request\Body::json($payloadArray);
-        dump($payload);
-        $payload = 'grant_type=client_credentials';
-        dump($payloadArray);
-        $responseToken = Unirest\Request::post($urlToken,$headersToken,$payload);
-        $token = $responseToken->body->token_type . ' ' . $responseToken->body->access_token;
-        dump($responseToken);
-        dump($token);
-        return $token;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+        $this->token = Sabre::getSabreToken($clientId,$clientSecret);
     }
 
     public function getCollection(string $resourceClass, string $operationName = null)
@@ -99,7 +83,8 @@ final class AirportCollectionDataProvider implements CollectionDataProviderInter
         }
 
         //AUTOCOMPLETE
-        $token = 'bearer T1RLAQIdFbN195gm3G3AUaUjddM9JW6ulhBqhCWrMS7sFdXh3YrmNzD0AADABpc1DvFHLF6EDyvrDJxxM4ewAT6MCVD6ArSD6xRP/6VC5FewXSi2ZmGd/cRtx/rAL7nMuCH/0HwUZkCQcySIvRs0EZqgTal1aPcQh8WUL0iYZkU/Rrbf0osC5APhcRLOt2kSc25g3iqlppokSrQPG6FDA3VJ9uRAhVnnqETHYlWaH04sREsTkOj3UPRXQ9hZ1m1SWsJ32UnR9WhNaJlv6MBDRdXZXpQ59au5NiH1ecyDuPkDbj0SbcDRjD1xBnK2';
+        $token = $this->token;
+        // $token = 'bearer T1RLAQIdFbN195gm3G3AUaUjddM9JW6ulhBqhCWrMS7sFdXh3YrmNzD0AADABpc1DvFHLF6EDyvrDJxxM4ewAT6MCVD6ArSD6xRP/6VC5FewXSi2ZmGd/cRtx/rAL7nMuCH/0HwUZkCQcySIvRs0EZqgTal1aPcQh8WUL0iYZkU/Rrbf0osC5APhcRLOt2kSc25g3iqlppokSrQPG6FDA3VJ9uRAhVnnqETHYlWaH04sREsTkOj3UPRXQ9hZ1m1SWsJ32UnR9WhNaJlv6MBDRdXZXpQ59au5NiH1ecyDuPkDbj0SbcDRjD1xBnK2';
         $query['category'] = 'AIR';//other categories AIR, CITY, RAIL
 
         $url = 'https://api.test.sabre.com/v1/lists/utilities/geoservices/autocomplete';

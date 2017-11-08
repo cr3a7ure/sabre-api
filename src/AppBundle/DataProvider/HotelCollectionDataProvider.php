@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
+use AppBundle\Action\SabreRetrieveTokenAction as Sabre;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,13 +25,17 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
 {
   protected $requestStack;
   protected $managerRegistry;
-  // protected $objectManager;
+  protected $clientId;
+  protected $clientSecret;
+  protected $token;
 
-  public function __construct(RequestStack $requestStack,ManagerRegistry $managerRegistry)
+  public function __construct(RequestStack $requestStack,ManagerRegistry $managerRegistry, $clientId, $clientSecret)
     {
         $this->requestStack = $requestStack;
         $this->managerRegistry = $managerRegistry;
-        // $this->objectManager = $objectManager;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+        $this->token = Sabre::getSabreToken($clientId,$clientSecret);
     }
 
     public function getCollection(string $resourceClass, string $operationName = null)
@@ -88,9 +93,7 @@ final class HotelCollectionDataProvider implements CollectionDataProviderInterfa
         $query['GeoSearchRQ']['GeoRef']['UOM'] = 'KM';
         // dump($query);
 
-
-        $token = 'bearer T1RLAQIdFbN195gm3G3AUaUjddM9JW6ulhBqhCWrMS7sFdXh3YrmNzD0AADABpc1DvFHLF6EDyvrDJxxM4ewAT6MCVD6ArSD6xRP/6VC5FewXSi2ZmGd/cRtx/rAL7nMuCH/0HwUZkCQcySIvRs0EZqgTal1aPcQh8WUL0iYZkU/Rrbf0osC5APhcRLOt2kSc25g3iqlppokSrQPG6FDA3VJ9uRAhVnnqETHYlWaH04sREsTkOj3UPRXQ9hZ1m1SWsJ32UnR9WhNaJlv6MBDRdXZXpQ59au5NiH1ecyDuPkDbj0SbcDRjD1xBnK2';
-
+        $token = $this->token;
         $headers = array('Authorization' => $token, 'Content-Type' => 'application/json' );
         // $headers = array('X-Originating-Ip' => '94.66.220.69');
 

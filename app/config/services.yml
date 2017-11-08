@@ -1,6 +1,8 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
+    client_id: VjE6Mmh4dXhjbTZoejRhZXg1bjpERVZDRU5URVI6RVhU
+    client_secret: TmhBVGxoODE=
 #    parameter_name: value
 
 services:
@@ -17,7 +19,7 @@ services:
 
     flight.collection_data_provider:
         class: 'AppBundle\DataProvider\FlightCollectionDataProvider'
-        arguments: ["@request_stack"]
+        arguments: ["@request_stack","@doctrine","%client_id%", "%client_secret%"]
         tags:
             -  { name: 'api_platform.collection_data_provider', priority: 2 }
 
@@ -28,7 +30,7 @@ services:
 
     airport.collection_data_provider:
         class: 'AppBundle\DataProvider\AirportCollectionDataProvider'
-        arguments: ["@request_stack","@doctrine"]
+        arguments: ["@request_stack","@doctrine","%client_id%", "%client_secret%"]
         tags:
             -  { name: 'api_platform.collection_data_provider', priority: 2 }
 
@@ -39,13 +41,13 @@ services:
 
     offer.collection_data_provider:
         class: 'AppBundle\DataProvider\OfferCollectionDataProvider'
-        arguments: ["@request_stack","@doctrine"]
+        arguments: ["@request_stack","@doctrine","%client_id%", "%client_secret%"]
         tags:
             -  { name: 'api_platform.collection_data_provider', priority: 2 }
 
     hotel.collection_data_provider:
         class: 'AppBundle\DataProvider\HotelCollectionDataProvider'
-        arguments: ["@request_stack","@doctrine"]
+        arguments: ["@request_stack","@doctrine","%client_id%", "%client_secret%"]
         tags:
             -  { name: 'api_platform.collection_data_provider', priority: 2 }
 

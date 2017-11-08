@@ -9,6 +9,7 @@ use AppBundle\Entity\Airport;
 use AppBundle\Entity\Flight;
 use AppBundle\Entity\PostalAddress;
 use AppBundle\Entity\GeoCoordinates;
+use AppBundle\Action\SabreRetrieveTokenAction as Sabre;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,32 +23,16 @@ use Unirest;
 final class OfferCollectionDataProvider implements CollectionDataProviderInterface
 {
   protected $requestStack;
+  protected $clientId;
+  protected $clientSecret;
+  protected $token;
 
-  public function __construct(RequestStack $requestStack)
+  public function __construct(RequestStack $requestStack, $reg, $clientId, $clientSecret)
     {
         $this->requestStack = $requestStack;
-    }
-
-    protected function getSabreToken() {
-        $clientId = 'VjE6Mmh4dXhjbTZoejRhZXg1bjpERVZDRU5URVI6RVhU';
-        $encodedId = base64_encode($clientId);
-        $clientSecret = 'TmhBVGxoODE=';
-        $encodedSecret = base64_encode($clientSecret);
-        $id = base64_encode($encodedId.':'.$encodedSecret);
-        $urlToken = 'https://api.sabre.com/v2/auth/token';
-        $urlToken = 'https://api.test.sabre.com/v2/auth/token';
-        $headersToken= array('Authorization' => 'Basic '.$id, 'Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => '*/*' );
-        dump($headersToken);
-        $payloadArray = array('grant_type'=>'client_credentials');
-        $payload = Unirest\Request\Body::json($payloadArray);
-        dump($payload);
-        $payload = 'grant_type=client_credentials';
-        dump($payloadArray);
-        $responseToken = Unirest\Request::post($urlToken,$headersToken,$payload);
-        $token = $responseToken->body->token_type . ' ' . $responseToken->body->access_token;
-        dump($responseToken);
-        dump($token);
-        return $token;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
+        $this->token = Sabre::getSabreToken($clientId,$clientSecret);
     }
 
     public function getCollection(string $resourceClass, string $operationName = null)
@@ -55,7 +40,6 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
         if (Offer::class !== $resourceClass) {
             throw new ResourceClassNotSupportedException();
         }
-
         // Get parameters
         $request = $this->requestStack->getCurrentRequest();
         $searchParametersObj = $request->query->all();
@@ -115,8 +99,8 @@ final class OfferCollectionDataProvider implements CollectionDataProviderInterfa
             $searchQuery['departuredate'] = $next_week->format('Y-m-d');
         }
         dump($searchQuery);
-        // $token = $this->getSabreToken();
-        $token = 'bearer T1RLAQIdFbN195gm3G3AUaUjddM9JW6ulhBqhCWrMS7sFdXh3YrmNzD0AADABpc1DvFHLF6EDyvrDJxxM4ewAT6MCVD6ArSD6xRP/6VC5FewXSi2ZmGd/cRtx/rAL7nMuCH/0HwUZkCQcySIvRs0EZqgTal1aPcQh8WUL0iYZkU/Rrbf0osC5APhcRLOt2kSc25g3iqlppokSrQPG6FDA3VJ9uRAhVnnqETHYlWaH04sREsTkOj3UPRXQ9hZ1m1SWsJ32UnR9WhNaJlv6MBDRdXZXpQ59au5NiH1ecyDuPkDbj0SbcDRjD1xBnK2';
+        $token = $this->token;
+        // $token = 'bearer T1RLAQIdFbN195gm3G3AUaUjddM9JW6ulhBqhCWrMS7sFdXh3YrmNzD0AADABpc1DvFHLF6EDyvrDJxxM4ewAT6MCVD6ArSD6xRP/6VC5FewXSi2ZmGd/cRtx/rAL7nMuCH/0HwUZkCQcySIvRs0EZqgTal1aPcQh8WUL0iYZkU/Rrbf0osC5APhcRLOt2kSc25g3iqlppokSrQPG6FDA3VJ9uRAhVnnqETHYlWaH04sREsTkOj3UPRXQ9hZ1m1SWsJ32UnR9WhNaJlv6MBDRdXZXpQ59au5NiH1ecyDuPkDbj0SbcDRjD1xBnK2';
 
         $headers = array('Authorization' => $token, 'Content-Type' => 'application/json' );
         // $headers = array('X-Originating-Ip' => '94.66.220.69');
