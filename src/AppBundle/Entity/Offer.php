@@ -22,11 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                     "force_eager"=false
  *             },
  *             collectionOperations={
- *                 "get"={"method"="GET", "hydra_context"={"@type"="schema:searchAction",
- *                                                         "target"="/offers",
- *                                                         "query"={"@type"="vocab:#Flight"},
- *                                                         "result"="vocab:#Offer",
- *                                                         "object"="vocab:#Offer"
+ *                 "get"={"method"="GET", "hydra_context"={"@type"="schema:SearchAction",
+ *                                                         "schema:target"="/offers",
+ *                                                         "schema:query"={"@type"="vocab:#Flight"},
+ *                                                         "schema:result"="vocab:#Offer",
+ *                                                         "schema:object"="vocab:#Offer"
  *                                         }},
  *                 "post"={"method"="POST"}
  *             }

@@ -24,11 +24,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             },
  *             collectionOperations={
  *                 "get"={"method"="GET",
- *                        "hydra_context"={"@type"="schema:searchAction",
- *                                         "target"="/hotels",
- *                                         "query"={"@type"="vocab:#GeoCoordinates"},
- *                                         "result"="vocab:#Hotel",
- *                                         "object"="vocab:#Hotel"
+ *                        "hydra_context"={"@type"="schema:SearchAction",
+ *                                         "schema:target"="/hotels",
+ *                                         "schema:query"={"@type"="vocab:#GeoCoordinates"},
+ *                                         "schema:result"="vocab:#Hotel",
+ *                                         "schema:object"="vocab:#Hotel"
  *                                         }},
  *                 "post"={"method"="POST"}
  *             }

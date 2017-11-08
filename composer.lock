@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d90be7d53e87753b7b64649bde2d9bc7",
+    "content-hash": "e41174c8800f63ee88b4c548b1dbe3a9",
     "packages": [
         {
             "name": "api-platform/core",
@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cr3a7ure/core",
-                "reference": "7c4c94ef8fc0128176e2dab6c63c070623e1f235"
+                "reference": "40f263b181645a96aefb5df5e2a05e192dce9e0e"
             },
             "require": {
                 "doctrine/inflector": "^1.0",
@@ -119,7 +119,7 @@
                 "REST",
                 "Swagger"
             ],
-            "time": "2017-11-05 23:49:43"
+            "time": "2017-11-08 11:58:39"
         },
         {
             "name": "composer/ca-bundle",
@@ -1117,6 +1117,52 @@
                 "sql"
             ],
             "time": "2014-01-12T16:20:24+00:00"
+        },
+        {
+            "name": "mashape/unirest-php",
+            "version": "v3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mashape/unirest-php.git",
+                "reference": "842c0f242dfaaf85f16b72e217bf7f7c19ab12cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mashape/unirest-php/zipball/842c0f242dfaaf85f16b72e217bf7f7c19ab12cb",
+                "reference": "842c0f242dfaaf85f16b72e217bf7f7c19ab12cb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "0.1.*",
+                "phpunit/phpunit": "~4.4"
+            },
+            "suggest": {
+                "ext-json": "Allows using JSON Bodies for sending and parsing requests"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Unirest\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Unirest PHP",
+            "homepage": "https://github.com/Mashape/unirest-php",
+            "keywords": [
+                "client",
+                "curl",
+                "http",
+                "https",
+                "rest"
+            ],
+            "time": "2016-08-11T17:49:21+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2855,16 +2901,16 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "80c82d7d41c4eed0bf27e215f27531c05b217c17"
+                "reference": "2b41b8b6d2c6edb1a5494f02f8e4129be2a44784"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/80c82d7d41c4eed0bf27e215f27531c05b217c17",
-                "reference": "80c82d7d41c4eed0bf27e215f27531c05b217c17",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/2b41b8b6d2c6edb1a5494f02f8e4129be2a44784",
+                "reference": "2b41b8b6d2c6edb1a5494f02f8e4129be2a44784",
                 "shasum": ""
             },
             "require": {
@@ -2876,8 +2922,8 @@
                 "symfony/monolog-bridge": "~2.7|~3.0|~4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8",
                 "symfony/console": "~2.3|~3.0|~4.0",
+                "symfony/phpunit-bridge": "^3.3|^4.0",
                 "symfony/yaml": "~2.3|~3.0|~4.0"
             },
             "type": "symfony-bundle",
@@ -2889,7 +2935,10 @@
             "autoload": {
                 "psr-4": {
                     "Symfony\\Bundle\\MonologBundle\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2911,7 +2960,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2017-09-26T03:17:02+00:00"
+            "time": "2017-11-06T16:02:17+00:00"
         },
         {
             "name": "symfony/polyfill-apcu",
